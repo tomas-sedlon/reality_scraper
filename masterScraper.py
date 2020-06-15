@@ -9,13 +9,21 @@ class MasterScraper:
 
         self.scrapers = [bezrealitky(),realityIdnes(),centrumReality(),sReality()]
 
+    def check_existing(self, flat):
+        for ex_flat in self.all_flats:
+            if flat['price_per_meter'] == ex_flat['price_per_meter']:
+                return True
+
+        return False
+
     def start_workflow(self):
 
         for scraper in self.scrapers:
             flats = scraper.start_workflow()
 
             for flat in flats:
-                self.all_flats.append(flat)
+                if not self.check_existing(flat):
+                    self.all_flats.append(flat)
 
     def show_results(self):
 

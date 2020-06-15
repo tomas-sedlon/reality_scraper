@@ -74,7 +74,8 @@ class Scraper:
                 #print(location, price, room_coeff, meters, price_per_meter, link)
 
                 floor, penb, state = self.parse_post(link)
-
+                if floor == "1":
+                    continue
 
                 if price > 5500000:
                     continue
