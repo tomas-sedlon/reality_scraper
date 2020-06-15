@@ -17,6 +17,8 @@ class MasterScraper:
             for flat in flats:
                 self.all_flats.append(flat)
 
+    def show_results(self):
+
         data = pd.DataFrame(self.all_flats)
 
         sorted = data.sort_values(by=['price_per_meter'])
@@ -30,4 +32,7 @@ class MasterScraper:
         pd.option_context('display.colheader_justify', 'right')
         print(sorted)
 
-MasterScraper().start_workflow()
+if __name__ == "__main__":
+    scraper = MasterScraper()
+    scraper.start_workflow()
+    scraper.show_results()
