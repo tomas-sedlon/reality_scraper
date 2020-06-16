@@ -49,11 +49,7 @@ class Scraper:
 
             price_per_meter = price / size
 
-            if price > 5500000:
-                continue
 
-            if price_per_meter > 100000.0:
-                continue
             #print(price,location,title,size,price_per_meter)
             link = ""
             if room_coeff > 3.5:

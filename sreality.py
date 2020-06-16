@@ -77,8 +77,10 @@ class Scraper:
                 if floor == "1":
                     continue
 
-                if price > 5500000:
+                if meters < 52:
                     continue
+
+
                 flat = Flat(title=location,
                             size=room_coeff,
                             price=price,
