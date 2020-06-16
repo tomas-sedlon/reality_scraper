@@ -2,14 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
 import re
-
+import yaml
 import pandas as pd
 
 class Scraper:
     def __init__(self):
         self.flats = []
+        cfg = yaml.safe_load(open('config.yml'))
+        baseUrl = cfg['realityIdnes_url']
 
-        baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bcondition%5D%5B0%5D=new&s-qc%5Bcondition%5D%5B1%5D=good-condition&s-qc%5Bcondition%5D%5B2%5D=maintained&s-qc%5Bcondition%5D%5B3%5D=after-reconstruction&s-qc%5Bmaterial%5D%5B0%5D=brick"
+        #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bcondition%5D%5B0%5D=new&s-qc%5Bcondition%5D%5B1%5D=good-condition&s-qc%5Bcondition%5D%5B2%5D=maintained&s-qc%5Bcondition%5D%5B3%5D=after-reconstruction&s-qc%5Bmaterial%5D%5B0%5D=brick"
 
         #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BsubtypeFlat%5D%5B4%5D=41&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bmaterial%5D%5B0%5D=brick"
         self.urls = [baseUrl]

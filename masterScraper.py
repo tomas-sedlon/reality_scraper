@@ -28,6 +28,8 @@ class MasterScraper:
     def show_results(self):
 
         data = pd.DataFrame(self.all_flats)
+        # round price_per_meter to 1 decimal place
+        data['price_per_meter'] = data.round({'price_per_meter': 0})
 
         sorted = data.sort_values(by=['price_per_meter'])
         pd.set_option('display.max_columns', 500)

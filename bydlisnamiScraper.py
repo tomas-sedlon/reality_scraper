@@ -1,12 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
+import yaml
 
 
 
 
 class Scraper:
     def __init__(self):
-        baseUrl = "https://www.bydlisnami.cz/nemovitosti?Ads%5Badvert_function%5D=1&Ads%5Badvert_type%5D=1&Ads%5BfromPrice%5D=0&Ads%5BtoPrice%5D=6+000+000&Ads%5Badvert_subtype%5D%5B%5D=5&Ads%5Badvert_subtype%5D%5B%5D=6&Ads%5Badvert_subtype%5D%5B%5D=7&Ads%5Badvert_subtype%5D%5B%5D=8&Ads%5Badvert_subtype%5D%5B%5D=9&Ads%5Bownership%5D%5B%5D=1&Ads%5BfromEstateArea%5D=&Ads%5BtoEstateArea%5D=&Ads%5BfromUsableArea%5D=&Ads%5BtoUsableArea%5D=&Ads%5Bloc_region_id%5D=1&Ads%5Bloc_city_id%5D=&Ads%5Bq%5D=&Ads_sort=top_date.desc&mobile_advert_type=1&mobile_loc_region=1"
+        cfg = yaml.safe_load(open('config.yml'))
+        baseUrl = cfg['bydlisnami_url']
+        #baseUrl = "https://www.bydlisnami.cz/nemovitosti?Ads%5Badvert_function%5D=1&Ads%5Badvert_type%5D=1&Ads%5BfromPrice%5D=0&Ads%5BtoPrice%5D=6+000+000&Ads%5Badvert_subtype%5D%5B%5D=5&Ads%5Badvert_subtype%5D%5B%5D=6&Ads%5Badvert_subtype%5D%5B%5D=7&Ads%5Badvert_subtype%5D%5B%5D=8&Ads%5Badvert_subtype%5D%5B%5D=9&Ads%5Bownership%5D%5B%5D=1&Ads%5BfromEstateArea%5D=&Ads%5BtoEstateArea%5D=&Ads%5BfromUsableArea%5D=&Ads%5BtoUsableArea%5D=&Ads%5Bloc_region_id%5D=1&Ads%5Bloc_city_id%5D=&Ads%5Bq%5D=&Ads_sort=top_date.desc&mobile_advert_type=1&mobile_loc_region=1"
         #baseUrl = "https://www.bezrealitky.cz/vypis/nabidka-prodej/byt/praha/2-1,3-kk,3-1,4-kk,4-1?priceTo=6%20000%20000&ownership%5B0%5D=osobni&construction%5B0%5D=cihla&surfaceFrom=50&_token=uOlMs5mRlC581leMdI66w1fRQs6Q_qOSPe2YbqBuiK8"
         urls = [baseUrl + "=&yt0="]
         for i in range(1,39):

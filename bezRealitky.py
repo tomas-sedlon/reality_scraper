@@ -1,11 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
+import yaml
 
 class Scraper:
     def __init__(self):
         self.flats = []
-        baseUrl = "https://www.bezrealitky.cz/vypis/nabidka-prodej/byt/praha/2-1,3-kk,3-1,4-kk,4-1?priceTo=6%20000%20000&ownership%5B0%5D=osobni&construction%5B0%5D=cihla&surfaceFrom=50&_token=uOlMs5mRlC581leMdI66w1fRQs6Q_qOSPe2YbqBuiK8"
+        cfg = yaml.safe_load(open('config.yml'))
+        baseUrl = cfg['bezrealitky_url']
+        #baseUrl = "https://www.bezrealitky.cz/vypis/nabidka-prodej/byt/praha/2-1,3-kk,3-1,4-kk,4-1?priceTo=6%20000%20000&ownership%5B0%5D=osobni&construction%5B0%5D=cihla&surfaceFrom=50&_token=uOlMs5mRlC581leMdI66w1fRQs6Q_qOSPe2YbqBuiK8"
         self.urls = [baseUrl,baseUrl+"&page=2",baseUrl+"&page=3"]
 
 

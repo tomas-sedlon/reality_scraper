@@ -2,12 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
 from traceback import print_exc
+import yaml
 
 class Scraper:
     def __init__(self):
         self.flats = []
 
-        baseUrl = "https://realitymix.cz/vypis-nabidek/?form%5Badresa_kraj_id%5D[]=19&form%5Bcena_mena%5D=&form%5Bcena_normalizovana__from%5D=&form%5Bcena_normalizovana__to%5D=6000000&form%5Bdispozice%5D[]=10&form%5Bdispozice%5D[]=11&form%5Bdispozice%5D[]=4&form%5Bdispozice%5D[]=5&form%5Bdruh_objektu%5D[]=2&form%5Bexclusive%5D=&form%5Bfk_rk%5D=&form%5Binzerat_typ%5D=1&form%5Bnemovitost_typ%5D=4&form%5Bplocha__from%5D=50&form%5Bplocha__to%5D=&form%5Bpodlazi_cislo__from%5D=1&form%5Bpodlazi_cislo__to%5D=&form%5Bprojekt_id%5D=&form%5Bsearch_in_city%5D=&form%5Bsearch_in_text%5D=&form%5Bstari_inzeratu%5D=&form%5Bstav_objektu%5D=&form%5Btop_nabidky%5D=&form%5Bvlastnictvi%5D[]=1"
+        cfg = yaml.safe_load(open('config.yml'))
+        baseUrl = cfg['centrumReality_url']
+
+        #baseUrl = "https://realitymix.cz/vypis-nabidek/?form%5Badresa_kraj_id%5D[]=19&form%5Bcena_mena%5D=&form%5Bcena_normalizovana__from%5D=&form%5Bcena_normalizovana__to%5D=6000000&form%5Bdispozice%5D[]=10&form%5Bdispozice%5D[]=11&form%5Bdispozice%5D[]=4&form%5Bdispozice%5D[]=5&form%5Bdruh_objektu%5D[]=2&form%5Bexclusive%5D=&form%5Bfk_rk%5D=&form%5Binzerat_typ%5D=1&form%5Bnemovitost_typ%5D=4&form%5Bplocha__from%5D=50&form%5Bplocha__to%5D=&form%5Bpodlazi_cislo__from%5D=1&form%5Bpodlazi_cislo__to%5D=&form%5Bprojekt_id%5D=&form%5Bsearch_in_city%5D=&form%5Bsearch_in_text%5D=&form%5Bstari_inzeratu%5D=&form%5Bstav_objektu%5D=&form%5Btop_nabidky%5D=&form%5Bvlastnictvi%5D[]=1"
         self.urls = [baseUrl]
         for i in range(1, 3):
             additionalUrl = baseUrl + "&stranka=" + str(i)
