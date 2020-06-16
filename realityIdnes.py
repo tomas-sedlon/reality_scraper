@@ -4,11 +4,12 @@ from model.flat import Flat
 import re
 import yaml
 import pandas as pd
+import os
 
 class Scraper:
     def __init__(self):
         self.flats = []
-        cfg = yaml.safe_load(open('config.yml'))
+        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
         baseUrl = cfg['realityIdnes_url']
 
         #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bcondition%5D%5B0%5D=new&s-qc%5Bcondition%5D%5B1%5D=good-condition&s-qc%5Bcondition%5D%5B2%5D=maintained&s-qc%5Bcondition%5D%5B3%5D=after-reconstruction&s-qc%5Bmaterial%5D%5B0%5D=brick"
@@ -38,18 +39,21 @@ class Scraper:
 
     def parse_posts(self,posts):
         for post in posts:
-            #print(post)
-            price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
-            price = int(price)
-            location = post.find("p",class_="c-list-products__info").text.strip()
-            title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
-            size = int(title.split(',')[1].replace("m²","").strip())
-            rooms = title.split(',')[0]
-            room_base_coeff = int(rooms.split('+')[0])
-            room_addons_coeff = 0.0 if "kk" in rooms else 0.5
-            room_coeff = room_base_coeff + room_addons_coeff
+            try:
+                #print(post)
+                price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
+                price = int(price)
+                location = post.find("p",class_="c-list-products__info").text.strip()
+                title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
+                size = int(title.split(',')[1].replace("m²","").strip())
+                rooms = title.split(',')[0]
+                room_base_coeff = int(rooms.split('+')[0])
+                room_addons_coeff = 0.0 if "kk" in rooms else 0.5
+                room_coeff = room_base_coeff + room_addons_coeff
 
-            price_per_meter = price / size
+                price_per_meter = price / size
+            except Exception as e:
+                print(f"Cannot parse post {post}, error: {repr(e)}")
 
 
             #print(price,location,title,size,price_per_meter)

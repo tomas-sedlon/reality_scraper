@@ -2,12 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 from traceback import print_exc
 import yaml
-
+import os
 from model.flat import Flat
 class Scraper:
     def __init__(self):
         self.flats = []
-        cfg = yaml.safe_load(open('config.yml'))
+        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
         baseUrl = cfg['sreality_url']
 
         #baseUrl = "https://www.sreality.cz/hledani/prodej/byty/praha?velikost=2%2B1,3%2Bkk,3%2B1,4%2Bkk&stavba=cihlova&vlastnictvi=osobni&stav=velmi-dobry-stav,dobry-stav,novostavby,po-rekonstrukci&plocha-od=50&plocha-do=10000000000&cena-od=0&cena-do=6000000"
@@ -113,22 +113,23 @@ class Scraper:
             soup = BeautifulSoup(self.driver.page_source)
 
             params = soup.find("div",class_="params")
-            labels = params.find_all("li",class_="param")
+            if params is not None:
+                labels = params.find_all("li",class_="param")
 
-            for param in labels:
+                for param in labels:
 
-                label = param.find("label",class_="param-label").text.strip()
-                if "Energetická náročnost budovy" in label:
-                    value = param.find("span").text.strip()
-                    value = value.replace("Třída ",'')
+                    label = param.find("label",class_="param-label").text.strip()
+                    if "Energetická náročnost budovy" in label:
+                        value = param.find("span").text.strip()
+                        value = value.replace("Třída ",'')
 
-                    penb = value.split('-').strip()
-                if "Stav objektu" in label:
-                    value = param.find("span").text.strip()
-                    state = value
-                if "Podlaží" in label:
-                    value = param.find("span").text.strip()
-                    floor = value.split('.')[0]
+                        penb = value.split('-')[0].strip()
+                    if "Stav objektu" in label:
+                        value = param.find("span").text.strip()
+                        state = value
+                    if "Podlaží" in label:
+                        value = param.find("span").text.strip()
+                        floor = value.split('.')[0]
         except Exception as e:
             print(e.__class__.__name__,e)
             print_exc()

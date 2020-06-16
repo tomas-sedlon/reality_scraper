@@ -3,11 +3,17 @@ from realityIdnes import Scraper as realityIdnes
 from centrumReality import Scraper as centrumReality
 from sreality import Scraper as sReality
 import pandas as pd
+import os
+import yaml
+
+
 class MasterScraper:
     def __init__(self):
         self.all_flats = []
 
         self.scrapers = [bezrealitky(),realityIdnes(),centrumReality(),sReality()]
+        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
+        self.res_file = cfg['res_file']
 
     def check_existing(self, flat):
         for ex_flat in self.all_flats:
@@ -29,7 +35,8 @@ class MasterScraper:
 
         data = pd.DataFrame(self.all_flats)
         # round price_per_meter to 1 decimal place
-        data['price_per_meter'] = data.round({'price_per_meter': 0})
+        data['price_per_meter'] = data['price_per_meter'].apply(lambda x: round(x, 1))
+        #data['price_per_meter'] = data.round({'price_per_meter': 0})
 
         sorted = data.sort_values(by=['price_per_meter'])
         pd.set_option('display.max_columns', 500)
@@ -41,6 +48,7 @@ class MasterScraper:
             [dict(selector='th', props=[('text-align', 'left')])])
         pd.option_context('display.colheader_justify', 'right')
         print(sorted)
+        sorted.to_csv(self.res_file)
 
 if __name__ == "__main__":
     scraper = MasterScraper()
