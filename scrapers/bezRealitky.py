@@ -5,9 +5,8 @@ import yaml
 import os
 
 class Scraper:
-    def __init__(self):
+    def __init__(self, cfg):
         self.flats = []
-        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
         baseUrl = cfg['bezrealitky_url']
         #baseUrl = "https://www.bezrealitky.cz/vypis/nabidka-prodej/byt/praha/2-1,3-kk,3-1,4-kk,4-1?priceTo=6%20000%20000&ownership%5B0%5D=osobni&construction%5B0%5D=cihla&surfaceFrom=50&_token=uOlMs5mRlC581leMdI66w1fRQs6Q_qOSPe2YbqBuiK8"
         self.urls = [baseUrl,baseUrl+"&page=2",baseUrl+"&page=3"]
@@ -20,14 +19,14 @@ class Scraper:
 
     def parse_pages(self,urls):
         for url in urls:
-            try:
+            #try:
                 response = requests.get(url,verify=False)
                 soup = BeautifulSoup(response.content,'html.parser')
 
                 mydivs = soup.findAll("div", {"class": "product__body"})
                 self.parse_posts(mydivs)
-            except Exception as e:
-                print(f"Error while loadinf {url}: {repr(e)}")
+            #except Exception as e:
+                #print(f"Error while loadinf {url}: {repr(e)}")
 
     def parse_posts(self,posts):
 
@@ -114,12 +113,3 @@ class Scraper:
         except TypeError as e:
             floor = 1000
         return floor,penb,state
-
-
-
-
-
-
-if __name__ == "__main__":
-
-    Scraper().start_workflow()

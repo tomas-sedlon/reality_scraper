@@ -5,9 +5,8 @@ import yaml
 import os
 from model.flat import Flat
 class Scraper:
-    def __init__(self):
+    def __init__(self, cfg):
         self.flats = []
-        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
         baseUrl = cfg['sreality_url']
 
         #baseUrl = "https://www.sreality.cz/hledani/prodej/byty/praha?velikost=2%2B1,3%2Bkk,3%2B1,4%2Bkk&stavba=cihlova&vlastnictvi=osobni&stav=velmi-dobry-stav,dobry-stav,novostavby,po-rekonstrukci&plocha-od=50&plocha-do=10000000000&cena-od=0&cena-do=6000000"
@@ -138,15 +137,3 @@ class Scraper:
 
 
         return floor, penb, state
-
-
-
-
-
-if __name__ == "__main__":
-    scraper = Scraper()
-    scraper.start_workflow()
-
-    for flat in scraper.flats:
-        print(flat)
-

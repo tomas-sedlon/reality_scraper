@@ -2,35 +2,40 @@ from scrapers.bezRealitky import Scraper as bezrealitky
 from scrapers.realityIdnes import Scraper as realityIdnes
 from scrapers.centrumReality import Scraper as centrumReality
 from scrapers.sreality import Scraper as sReality
+from scrapers.bydlisnamiScraper import Scraper as bydlisnami
 import pandas as pd
 import os
 import yaml
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
+from database.mysql_flat import Flat
 
 
 class MasterScraper:
     def __init__(self):
         self.all_flats = []
-
-        self.scrapers = [bezrealitky(),realityIdnes(),centrumReality(),sReality()]
-        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
-        self.res_file = cfg['res_file']
+        self.cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
+        self.scrapers = [bezrealitky(self.cfg)]#, centrumReality(self.cfg), sReality(self.cfg), realityIdnes(self.cfg), bydlisnami(self.cfg)]
+        self.res_file = self.cfg['res_file']
+        self.db_name = self.cfg['db_name']
         # Define the MySQL engine using MySQL Connector/Python
         # change the user and pass if you ever want to use this as anything more than a home fun project
         self.engine = db.create_engine(
-            f'mysql+mysqlconnector://root:root@localhost:3306/reality',
+            f'mysql+mysqlconnector://root:root@localhost:3306/{self.db_name}',
             echo=True
         )
         self.connection = self.engine.connect()
-        self.metadata = db.MetaData()
-        self.flats_table = db.Table('flats', self.metadata, autoload=True, autoload_with=engine)
         # create a configured "Session" class
         Session = sessionmaker(bind=self.engine)
         # create a Session
         self.session = Session()
-
-
+        # get metadata
+        self.metadata = db.MetaData()
+        self.metadata.bind = self.engine
+        # create flat table
+        self.metadata.create_all(self.engine, tables=[Flat.__table__])
+        # get the flat tab;e
+        self.flats_table = db.Table('flats', self.metadata)
 
     def check_existing(self, flat):
         for ex_flat in self.all_flats:
@@ -43,6 +48,7 @@ class MasterScraper:
 
         for scraper in self.scrapers:
             flats = scraper.start_workflow()
+            print(f"\n\n\n flats: {str(flats)}")
 
             for flat in flats:
                 if not self.check_existing(flat):
@@ -51,6 +57,7 @@ class MasterScraper:
     def get_current_results(self):
         data = pd.DataFrame(self.all_flats)
         # round price_per_meter to 1 decimal place
+        print(data.to_string())
         data['price_per_meter'] = data['price_per_meter'].apply(lambda x: round(x, 1))
         sorted_data = data.sort_values(by=['price_per_meter'])
         return sorted_data
@@ -62,34 +69,52 @@ class MasterScraper:
         pd.set_option('display.width', 2000)
         pd.set_option('display.expand_frame_repr', False)
         pd.set_option('max_colwidth', 800)
-        sorted.style.set_properties(**{'text-align': 'left'}).set_table_styles(
+        sorted_data.style.set_properties(**{'text-align': 'left'}).set_table_styles(
             [dict(selector='th', props=[('text-align', 'left')])])
         pd.option_context('display.colheader_justify', 'right')
-        print(sorted)
+        print(f"\n\n\n\n Found new flats that were not found before:\n")
+        print(sorted_data)
 
     def save_to_csv(self, sorted_data: pd.DataFrame, path: str):
         sorted_data.to_csv(path)
 
     def get_old_data(self):
         # Equivalent to 'SELECT *'
-        query = db.select([self.flats_table])
-        ResultProxy = self.connection.execute(query)
-        ResultSet = ResultProxy.fetchall()
-        # convert to pandas df
-        df = pd.DataFrame(ResultSet)
-        df.columns = ResultSet[0].keys()
+        try:
+            str_sql = db.text(f"SELECT * FROM {self.db_name}.flats")
+            result_proxy = self.connection.execute(str_sql)
+            result_set = result_proxy.fetchall()
+            # convert to pandas df
+            df = pd.DataFrame(result_set)
+            df.columns = result_set[0].keys()
+        except Exception as e:
+            print(f"Cannot acquire old data from db because of error: \n {repr(e)} "
+                  f"\n Assuming no old data are present in db")
+            columns = Flat.__table__.columns.keys()
+            df = pd.DataFrame(columns=columns)
+
         print(df.to_string())
         # retrun resulting dataframe
         return df
 
     # get current data that are not in old data
     def get_only_new_data(self, current_data: pd.DataFrame, old_data: pd.DataFrame):
-        common = current_data.merge(old_data, on=['title', 'price_per_meter'])
-        only_new_data = current_data[(~current_data.title.isin(common.title)) & (~current_data.price_per_meter.isin(common.price_per_meter))]
+        print(f"current_data: \n{current_data.to_string()}")
+        print(f"old_data: \n{old_data.to_string()}")
+        #common = current_data.merge(old_data, on=['title', 'price_per_meter'])
+        common = current_data.merge(old_data, on=['link'])
+        print(f"common: \n{common.to_string()}")
+        #only_new_data = current_data[(~current_data.title.isin(common.title)) & (~current_data.price_per_meter.isin(common.price_per_meter))]
+        only_new_data = current_data[(~current_data.link.isin(common.link))]
+        print(f"only_new_data: \n{only_new_data.to_string()}")
         return only_new_data
 
     def truncate_flats(self):
+        self.session.query(Flat).delete()
+        self.session.commit()
 
+    def insert_flats(self, data: pd.DataFrame):
+        data.to_sql(con=self.engine, name='flats', if_exists='append', index=False)
 
 
 if __name__ == "__main__":
@@ -102,9 +127,12 @@ if __name__ == "__main__":
     old_data = scraper.get_old_data()
     # get only new flats that were not in our db table
     only_new_flats = scraper.get_only_new_data(current_data, old_data)
-    # truncate our table and insert only_new_flats
-
-
-
-    scraper.show_results(current_data)
-scraper.save_to_csv(current_data, scraper.res_file)
+    # truncate our table and insert current_data to be able to filter against them in the future
+    scraper.truncate_flats()
+    scraper.insert_flats(current_data)
+    # close the db session
+    scraper.session.close()
+    # show only_new_flats
+    scraper.show_results(only_new_flats)
+    # save only_new_flats to csv
+    scraper.save_to_csv(only_new_flats, scraper.res_file)

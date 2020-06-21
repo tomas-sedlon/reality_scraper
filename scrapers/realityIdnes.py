@@ -7,9 +7,8 @@ import pandas as pd
 import os
 
 class Scraper:
-    def __init__(self):
+    def __init__(self, cfg):
         self.flats = []
-        cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
         baseUrl = cfg['realityIdnes_url']
 
         #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bcondition%5D%5B0%5D=new&s-qc%5Bcondition%5D%5B1%5D=good-condition&s-qc%5Bcondition%5D%5B2%5D=maintained&s-qc%5Bcondition%5D%5B3%5D=after-reconstruction&s-qc%5Bmaterial%5D%5B0%5D=brick"
@@ -123,10 +122,3 @@ class Scraper:
         #print(floor,penb)
 
         return floor,penb,state
-
-if __name__ == "__main__":
-    scraper = Scraper()
-    scraper.start_workflow()
-
-    for flat in scraper.flats:
-        print(flat)
