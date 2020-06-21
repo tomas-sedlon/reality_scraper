@@ -15,7 +15,8 @@ class MasterScraper:
     def __init__(self):
         self.all_flats = []
         self.cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__),'config.yml')))
-        self.scrapers = [bezrealitky(self.cfg)]#, centrumReality(self.cfg), sReality(self.cfg), realityIdnes(self.cfg), bydlisnami(self.cfg)]
+        # TODO add bydlisnami(self.cfg)
+        self.scrapers = [centrumReality(self.cfg), sReality(self.cfg), realityIdnes(self.cfg), bezrealitky(self.cfg)]
         self.res_file = self.cfg['res_file']
         self.db_name = self.cfg['db_name']
         # Define the MySQL engine using MySQL Connector/Python
@@ -48,7 +49,6 @@ class MasterScraper:
 
         for scraper in self.scrapers:
             flats = scraper.start_workflow()
-            print(f"\n\n\n flats: {str(flats)}")
 
             for flat in flats:
                 if not self.check_existing(flat):

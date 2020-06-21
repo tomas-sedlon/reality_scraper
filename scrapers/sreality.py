@@ -9,8 +9,6 @@ class Scraper:
         self.flats = []
         baseUrl = cfg['sreality_url']
 
-        #baseUrl = "https://www.sreality.cz/hledani/prodej/byty/praha?velikost=2%2B1,3%2Bkk,3%2B1,4%2Bkk&stavba=cihlova&vlastnictvi=osobni&stav=velmi-dobry-stav,dobry-stav,novostavby,po-rekonstrukci&plocha-od=50&plocha-do=10000000000&cena-od=0&cena-do=6000000"
-
         self.urls = [baseUrl+"&bez-aukce=1"]
         for i in range(1, 3):
             additionalUrl = baseUrl + "&strana=" + str(i) + "&bez-aukce=1"
@@ -25,21 +23,16 @@ class Scraper:
         from selenium import webdriver
 
         self.driver = webdriver.PhantomJS("/mnt/c/Users/Thomas/Desktop/realityScraper/phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
-        #soupFromJokesCC = BeautifulSoup(driver.page_source)  # page_source fetches page after rendering is complete
-        #driver.save_screenshot('screen.png')  # save a screenshot to disk
 
-        #driver.quit()
         for url in urls:
             print("INFO -- parsing page")
             self.driver.get(url)
-            #response = requests.get(url, verify=False)
             soup = BeautifulSoup(self.driver.page_source)
 
 
 
             posts = soup.find_all("div",class_="info")
 
-            #print(posts)
             self.parse_posts(posts)
         self.driver.quit()
 
@@ -72,7 +65,6 @@ class Scraper:
                 meters = meters[-2:]
                 meters = int(meters)
                 price_per_meter = price / meters
-                #print(location, price, room_coeff, meters, price_per_meter, link)
 
                 floor, penb, state = self.parse_post(link)
                 if floor == "1":
@@ -95,11 +87,8 @@ class Scraper:
                 self.flats.append(flat.get_cmp_dict())
             except IndexError as ie:
                 print('error',heading)
-                #print(heading,ie)
             except ValueError as ve:
                 print('error',heading)
-                #print(heading,ve)
-            #print(post)
 
     def parse_post(self,link):
         floor = 1000

@@ -11,9 +11,6 @@ class Scraper:
         self.flats = []
         baseUrl = cfg['realityIdnes_url']
 
-        #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bcondition%5D%5B0%5D=new&s-qc%5Bcondition%5D%5B1%5D=good-condition&s-qc%5Bcondition%5D%5B2%5D=maintained&s-qc%5Bcondition%5D%5B3%5D=after-reconstruction&s-qc%5Bmaterial%5D%5B0%5D=brick"
-
-        #baseUrl = "https://reality.idnes.cz/s/prodej/byty/cena-do-6000000/praha/?s-qc%5BsubtypeFlat%5D%5B0%5D=21&s-qc%5BsubtypeFlat%5D%5B1%5D=3k&s-qc%5BsubtypeFlat%5D%5B2%5D=31&s-qc%5BsubtypeFlat%5D%5B3%5D=4k&s-qc%5BsubtypeFlat%5D%5B4%5D=41&s-qc%5BusableAreaMin%5D=50&s-qc%5Bownership%5D%5B0%5D=personal&s-qc%5Bmaterial%5D%5B0%5D=brick"
         self.urls = [baseUrl]
         for i in range(1,6):
             additionalUrl = baseUrl+ "&page="+str(i)
@@ -28,18 +25,15 @@ class Scraper:
 
     def parse_pages(self,urls):
         for url in urls:
-            #print(url)
             response = requests.get(url,verify=False)
             soup = BeautifulSoup(response.content,'html.parser',fromEncoding='utf-8')
 
             posts = soup.findAll("div", {"class": "c-list-products__inner"})
-            #print(mydivs)
             self.parse_posts(posts)
 
     def parse_posts(self,posts):
         for post in posts:
             try:
-                #print(post)
                 price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
                 price = int(price)
                 location = post.find("p",class_="c-list-products__info").text.strip()
@@ -55,8 +49,6 @@ class Scraper:
                 print(f"Cannot parse post {post}, error: {repr(e)}")
 
 
-            #print(price,location,title,size,price_per_meter)
-            link = ""
             if room_coeff > 3.5:
                 continue
             if size < 55:

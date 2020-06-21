@@ -1,17 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
-import yaml
-import os
+
 
 class Scraper:
     def __init__(self, cfg):
         self.flats = []
         baseUrl = cfg['bezrealitky_url']
-        #baseUrl = "https://www.bezrealitky.cz/vypis/nabidka-prodej/byt/praha/2-1,3-kk,3-1,4-kk,4-1?priceTo=6%20000%20000&ownership%5B0%5D=osobni&construction%5B0%5D=cihla&surfaceFrom=50&_token=uOlMs5mRlC581leMdI66w1fRQs6Q_qOSPe2YbqBuiK8"
         self.urls = [baseUrl,baseUrl+"&page=2",baseUrl+"&page=3"]
-
-
 
     def start_workflow(self):
         self.parse_pages(self.urls)
@@ -19,21 +15,19 @@ class Scraper:
 
     def parse_pages(self,urls):
         for url in urls:
-            #try:
+            try:
                 response = requests.get(url,verify=False)
                 soup = BeautifulSoup(response.content,'html.parser')
 
                 mydivs = soup.findAll("div", {"class": "product__body"})
                 self.parse_posts(mydivs)
-            #except Exception as e:
-                #print(f"Error while loadinf {url}: {repr(e)}")
+            except Exception as e:
+                print(f"Error while loadinf {url}: {repr(e)}")
 
-    def parse_posts(self,posts):
+    def parse_posts(self, posts):
 
         for div in posts:
-            #print(div)
             location = div.find('strong').text
-            suburb = location.split('-')[1]
             heading = div.find("p", class_='product__note').text.strip()
             meters = heading.replace("Prodej bytu","").replace("m²","")
             rooms = meters.split(',')[0].strip()
@@ -46,7 +40,6 @@ class Scraper:
             room_base_coeff = int(rooms.split('+')[0])
             room_addons_coeff =0.0 if "kk" in rooms else 0.5
             room_coeff = room_base_coeff + room_addons_coeff
-            price_per_room = price / room_coeff
 
             if price_per_meter > 100000.0:
                 continue
@@ -77,8 +70,6 @@ class Scraper:
                 state=state
             )
             self.flats.append(flat.get_cmp_dict())
-            #print(location,suburb,price,room_coeff,rooms,size,price_per_meter, price_per_room)
-            #print(div)
 
     def parse_post(self,link):
         floor = None
@@ -90,7 +81,6 @@ class Scraper:
 
         div = soup.find("div", {"class": "b-desc"})
 
-        #print(div)
         desc = div.find("p",class_="b-desc__info").text.strip()
 
         if "určen k rekonstrukci" in desc:
@@ -99,15 +89,12 @@ class Scraper:
 
         for row in rows:
             content = row.text.strip()
-            #print(content)
 
             if "PENB" in content:
                 penb = content.replace("PENB:","").replace("\n","").strip()
             if "Podlaží:" in content:
                 floor = content.replace("Podlaží:","").replace("\n","").strip()
-        #print(desc)
 
-        #print(floor,penb)
         try:
             floor = int(floor)
         except TypeError as e:
