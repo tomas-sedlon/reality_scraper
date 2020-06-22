@@ -9,6 +9,7 @@ import yaml
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
 from database.mysql_flat import Flat
+from emailing.EmailSender import EmailSender
 
 
 class MasterScraper:
@@ -99,14 +100,8 @@ class MasterScraper:
 
     # get current data that are not in old data
     def get_only_new_data(self, current_data: pd.DataFrame, old_data: pd.DataFrame):
-        print(f"current_data: \n{current_data.to_string()}")
-        print(f"old_data: \n{old_data.to_string()}")
-        #common = current_data.merge(old_data, on=['title', 'price_per_meter'])
         common = current_data.merge(old_data, on=['link'])
-        print(f"common: \n{common.to_string()}")
-        #only_new_data = current_data[(~current_data.title.isin(common.title)) & (~current_data.price_per_meter.isin(common.price_per_meter))]
         only_new_data = current_data[(~current_data.link.isin(common.link))]
-        print(f"only_new_data: \n{only_new_data.to_string()}")
         return only_new_data
 
     def truncate_flats(self):
@@ -136,3 +131,6 @@ if __name__ == "__main__":
     scraper.show_results(only_new_flats)
     # save only_new_flats to csv
     scraper.save_to_csv(only_new_flats, scraper.res_file)
+    # send emails about new flats
+    message = None if only_new_flats.empty else only_new_flats.to_string(index=False)
+    EmailSender().send_message_to_all(message)
