@@ -61,7 +61,9 @@ class MasterScraper:
         print(data.to_string())
         data['price_per_meter'] = data['price_per_meter'].apply(lambda x: round(x, 1))
         sorted_data = data.sort_values(by=['price_per_meter'])
-        return sorted_data
+        # filter the 'floor' data to only contain integers
+        filtered_data = sorted_data[pd.to_numeric(sorted_data['floor'], errors='coerce').notnull()]
+        return filtered_data
 
     def show_results(self, sorted_data: pd.DataFrame):
 
