@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class Scraper:
     def __init__(self, cfg):
@@ -41,22 +42,10 @@ class Scraper:
             room_addons_coeff =0.0 if "kk" in rooms else 0.5
             room_coeff = room_base_coeff + room_addons_coeff
 
-            if price_per_meter > 100000.0:
-                continue
-
-            if price > 5500000:
-                continue
-
             link = div.find("a",class_="product__link")['href']
             link = "https://bezrealitky.cz" + link
 
             floor,penb,state = self.parse_post(link)
-
-            if floor < 2:
-                continue
-
-            if state == "bad":
-                continue
 
             flat = Flat(
                 price=price,

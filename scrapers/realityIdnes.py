@@ -5,6 +5,8 @@ import re
 import yaml
 import pandas as pd
 import os
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class Scraper:
     def __init__(self, cfg):
@@ -48,20 +50,12 @@ class Scraper:
             except Exception as e:
                 print(f"Cannot parse post {post}, error: {repr(e)}")
 
-
-            if room_coeff > 3.5:
-                continue
-            if size < 55:
-                continue
             link = post.find("a",class_="c-list-products__link")['href']
             link = "https://reality.idnes.cz" + link
 
             link = link.split('?')[0]
 
             floor,penb,state = self.parse_post(link)
-
-            if floor < 2:
-                continue
 
             flat = Flat(title=location,
                         size=room_coeff,
@@ -87,8 +81,6 @@ class Scraper:
         dt= div.find_all("dt")
         dd = div.find_all("dd")
         desc = div.find("div",class_="b-desc")
-        desc_text = desc.find("p").text.strip()
-        floor_regex = r"((?: )[1-9](?:\.))"
 
         for dt,dd in zip(dt,dd):
             if "Podlaží" == dt.text.strip():
@@ -106,11 +98,6 @@ class Scraper:
 
         if floor == 1000:
             pass
-            #floor = re.findall(desc_text,floor_regex)
-            #print(link)
 
-
-            #print(dt,dd)
-        #print(floor,penb)
 
         return floor,penb,state

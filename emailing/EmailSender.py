@@ -10,12 +10,12 @@ from typing import Optional, List
 
 class EmailSender:
 
-    def __init__(self):
-        self.cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__), "..", 'email.yml')))
+    def __init__(self, client_config):
+        self.email_cfg = yaml.safe_load(open(os.path.join(os.path.dirname(__file__), "..", 'email.yml')))
 
-        self.sender_email = self.cfg['sender_email']
-        self.sender_email_password = self.cfg['sender_email_password']
-        self.receiver_emails: List[str] = self.cfg['receiver_emails']
+        self.sender_email = self.email_cfg['sender_email']
+        self.sender_email_password = self.email_cfg['sender_email_password']
+        self.receiver_emails: List[str] = client_config['receiver_emails']
         self.subject = f'reality_report_{str(datetime.date.today())}'
 
         self.port = 465  # For SSL

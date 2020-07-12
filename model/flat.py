@@ -8,6 +8,7 @@ class Flat:
     floor = "N/A"
     penb = "N/A"
     state = "neutral"
+
     def __init__(self,price,title,link, size, meters, price_per_meter,floor,penb,state):
         self.price = price
         self.title = title

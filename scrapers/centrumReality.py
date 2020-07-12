@@ -4,6 +4,9 @@ from model.flat import Flat
 from traceback import print_exc
 import yaml
 import os
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 class Scraper:
     def __init__(self, cfg):
@@ -20,13 +23,17 @@ class Scraper:
 
     def parse_pages(self,urls):
         for url in urls:
-            response = requests.get(url,verify=False)
-            soup = BeautifulSoup(response.content,'html.parser',fromEncoding='utf-8')
+            try:
+                response = requests.get(url,verify=False)
+                soup = BeautifulSoup(response.content,'html.parser',fromEncoding='utf-8')
 
-            all_posts = soup.find("ul", {"class": "advert-list-items__items"})
-            posts = all_posts.find_all("li")
+                all_posts = soup.find("ul", {"class": "advert-list-items__items"})
+                posts = all_posts.find_all("li")
 
-            self.parse_posts(posts)
+                self.parse_posts(posts)
+            except Exception as e:
+                print(f"Cannot parse url {url} in centrumReality Scraper, error: {str(e)}")
+                continue
 
     def parse_post(self,link):
 
@@ -40,8 +47,6 @@ class Scraper:
 
         detail_info = soup.find("div",class_="detail-information")
         desc = soup.find("div", class_="advert-description__text-inner-inner").text.strip()
-
-
 
 
         info_items = detail_info.find_all("li",class_="detail-information__data-item")
@@ -95,9 +100,6 @@ class Scraper:
 
                 floor, penb, state = self.parse_post(link)
 
-                if floor < 2:
-                    continue
-
                 flat = Flat(
                     price=price,
                     title=location,
@@ -113,8 +115,8 @@ class Scraper:
             except AttributeError as ae:
                 pass # this is an advert
             except Exception as e:
-                print("Exception occurred in post ------------------------------------------------------------------")
-                print(e.__class__.__name__,e)
+                print("Exception occurred in post:")
+                print(e.__class__.__name__, str(e))
                 if "Cena" in str(e):
                     pass
                 elif "Rezerv" in str(e):

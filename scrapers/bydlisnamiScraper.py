@@ -2,7 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import yaml
 import os
-
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 
 
@@ -25,10 +26,7 @@ class Scraper:
             response = requests.get(url,verify=False)
             soup = BeautifulSoup(response.content,'html.parser',fromEncoding='utf-8')
 
-
-
             mydivs = soup.findAll("div", {"class": "listview-item"})
-
 
             self.parse_posts(mydivs)
 
@@ -44,6 +42,7 @@ class Scraper:
             try:
                 price = int(price)
             except ValueError as e:
+                print(str(e))
                 continue
             suburb = ""
             try:
@@ -57,15 +56,13 @@ class Scraper:
 
                 desc = div.find('p',class_="hidden-sm").text.strip()
             except ValueError as e:
+                print(str(e))
                 continue
 
-            if "panel" in desc or "ateliér" in desc:
-                print("panel")
-                continue
 
             print(location,suburb,size,rooms,room_coeff,price,price_per_meter,desc)
 
-            continue
+            #continue
             heading = div.find("p", class_='product__note').text.strip()
             meters = heading.replace("Prodej bytu","").replace("m²","")
 
@@ -77,8 +74,4 @@ class Scraper:
             price_per_meter = price / size
 
             price_per_room = price / room_coeff
-            if price_per_room > 2500000.0:
-                continue
-            if price_per_meter > 95000.0:
-                continue
             print(location,suburb,price,room_coeff,rooms,size,price_per_meter, price_per_room)

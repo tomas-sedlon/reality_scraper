@@ -3,7 +3,11 @@ from bs4 import BeautifulSoup
 from traceback import print_exc
 import yaml
 import os
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 from model.flat import Flat
+
+
 class Scraper:
     def __init__(self, cfg):
         self.flats = []
@@ -67,12 +71,6 @@ class Scraper:
                 price_per_meter = price / meters
 
                 floor, penb, state = self.parse_post(link)
-                if floor == "1":
-                    continue
-
-                if meters < 52:
-                    continue
-
 
                 flat = Flat(title=location,
                             size=room_coeff,
@@ -86,9 +84,9 @@ class Scraper:
                             )
                 self.flats.append(flat.get_cmp_dict())
             except IndexError as ie:
-                print('error',heading)
+                print('error',heading, str(ie))
             except ValueError as ve:
-                print('error',heading)
+                print('error',heading, str(ve))
 
     def parse_post(self,link):
         floor = 1000
@@ -119,7 +117,7 @@ class Scraper:
                         value = param.find("span").text.strip()
                         floor = value.split('.')[0]
         except Exception as e:
-            print(e.__class__.__name__,e)
+            print(e.__class__.__name__, str(e))
             print_exc()
             print(link)
             print("------------------------")
