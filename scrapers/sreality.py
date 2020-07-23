@@ -49,7 +49,10 @@ class Scraper:
             heading = heading.replace("Prodej bytu ","")
             heading = heading.encode("ascii", errors="ignore").decode()
             rooms = heading.split(' ')[0]
-            room_base_coeff = int(rooms.split('+')[0])
+            try:
+                room_base_coeff = int(rooms.split('+')[0])
+            except:
+                room_base_coeff = 0.0
             room_addons_coeff = 0.0 if "kk" in rooms else 0.5
             room_coeff = room_base_coeff + room_addons_coeff
 

@@ -35,20 +35,22 @@ class Scraper:
 
     def parse_posts(self,posts):
         for post in posts:
-            try:
-                price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
-                price = int(price)
-                location = post.find("p",class_="c-list-products__info").text.strip()
-                title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
-                size = int(title.split(',')[1].replace("m²","").strip())
-                rooms = title.split(',')[0]
-                room_base_coeff = int(rooms.split('+')[0])
-                room_addons_coeff = 0.0 if "kk" in rooms else 0.5
-                room_coeff = room_base_coeff + room_addons_coeff
 
-                price_per_meter = price / size
+            price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
+            price = int(price)
+            location = post.find("p",class_="c-list-products__info").text.strip()
+            title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
+            size = int(title.split(',')[1].replace("m²","").strip())
+            rooms = title.split(',')[0]
+            try:
+                room_base_coeff = int(rooms.split('+')[0])
             except Exception as e:
+                room_base_coeff = 0.0
                 print(f"Cannot parse post {post}, error: {repr(e)}")
+            room_addons_coeff = 0.0 if "kk" in rooms else 0.5
+            room_coeff = room_base_coeff + room_addons_coeff
+            price_per_meter = price / size
+
 
             link = post.find("a",class_="c-list-products__link")['href']
             link = "https://reality.idnes.cz" + link
