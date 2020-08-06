@@ -10,6 +10,9 @@ class Flat:
     state = "neutral"
 
     def __init__(self,price,title,link, size, meters, price_per_meter,floor,penb,state):
+        if price_per_meter > 999999:
+            price_per_meter = 999999
+
         self.price = price
         self.title = title
         self.link = link

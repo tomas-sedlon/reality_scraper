@@ -40,7 +40,11 @@ class Scraper:
             price = int(price)
             location = post.find("p",class_="c-list-products__info").text.strip()
             title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
-            size = int(title.split(',')[1].replace("m²","").strip())
+            try:
+                size = int(title.split(',')[1].replace("m²","").strip().split(".")[0])
+            except Exception as e:
+                print(f"Cannot parse title {title}, error: {repr(e)}")
+                size = 1
             rooms = title.split(',')[0]
             try:
                 room_base_coeff = int(rooms.split('+')[0])
