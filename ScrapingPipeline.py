@@ -58,7 +58,6 @@ class ScrapingPipeline:
     def get_current_results(self):
         data = pd.DataFrame(self.all_flats)
         # round price_per_meter to 1 decimal place
-        print(data.to_string())
         data['price_per_meter'] = data['price_per_meter'].apply(lambda x: round(x, 1))
         sorted_data = data.sort_values(by=['price_per_meter'])
         # filter the 'floor' data to only contain integers
@@ -96,8 +95,7 @@ class ScrapingPipeline:
             columns = Flat.__table__.columns.keys()
             df = pd.DataFrame(columns=columns)
 
-        print(df.to_string())
-        # retrun resulting dataframe
+        # return resulting dataframe
         return df
 
     # get current data that are not in old data

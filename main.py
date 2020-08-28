@@ -22,8 +22,8 @@ def run_pipeline_for_client(client_config):
     # get only new flats that were not in our db table
     only_new_flats = scraper.get_only_new_data(current_data, old_data)
     # truncate our table and insert current_data to be able to filter against them in the future
-    scraper.truncate_flats()
-    scraper.insert_flats(current_data)
+    #scraper.truncate_flats()
+    scraper.insert_flats(only_new_flats)
     # close the db session
     scraper.session.close()
     # show only_new_flats

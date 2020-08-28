@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from model.flat import Flat
-from traceback import print_exc
+import traceback
 import yaml
 import os
 import urllib3
@@ -96,7 +96,10 @@ class Scraper:
                 floor = "N/A"
                 penb = "N/A"
                 state = "N/A"
-                link = post.find("a",class_="form-price")["href"]
+                try:
+                    link = post.find("a",class_="form-price")["href"]
+                except:
+                    link = post.find("a",class_="advert-list-items__content")["href"]
 
                 floor, penb, state = self.parse_post(link)
 
@@ -116,6 +119,7 @@ class Scraper:
                 pass # this is an advert
             except Exception as e:
                 print("Exception occurred in post:")
+                print(traceback.format_exc())
                 print(e.__class__.__name__, str(e))
                 if "Cena" in str(e):
                     pass
