@@ -42,9 +42,11 @@ if __name__ == "__main__":
     run_for: List[str] = cfg['run_for']
     client_config_list = [cfg[client] for client in cfg if client in run_for]
     # run in paralel
-    pool = multiprocessing.Pool(processes=4)
-    pool.map(run_pipeline_for_client, client_config_list)
-    pool.close()
-    pool.join()
-    pool.terminate()
+    #pool = multiprocessing.Pool(processes=4)
+    #pool.map(run_pipeline_for_client, client_config_list)
+    #pool.close()
+    #pool.join()
+    #pool.terminate()
+    for client in client_config_list:
+        run_pipeline_for_client(client)
 

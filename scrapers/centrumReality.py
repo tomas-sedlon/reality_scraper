@@ -13,7 +13,7 @@ class Scraper:
         self.flats = []
         baseUrl = cfg['centrumReality_url']
         self.urls = [baseUrl]
-        for i in range(1, 3):
+        for i in range(1, 39):
             additionalUrl = baseUrl + "&stranka=" + str(i)
             self.urls.append(additionalUrl)
 
@@ -32,7 +32,7 @@ class Scraper:
 
                 self.parse_posts(posts)
             except Exception as e:
-                print(f"Cannot parse url {url} in centrumReality Scraper, error: {str(e)}")
+                # print(f"Cannot parse url {url} in centrumReality Scraper, error: {str(e)}")
                 continue
 
     def parse_post(self,link):
@@ -76,7 +76,6 @@ class Scraper:
 
     def parse_posts(self,posts):
         for post in posts:
-
             try:
                 heading = post.find("h2").text.strip()
                 heading = heading.replace("Prodej bytu,","").replace(" ","")
@@ -86,12 +85,18 @@ class Scraper:
                 room_coeff = room_base_coeff + room_addons_coeff
                 meters = heading.split(',')[1]
                 meters = int(meters.replace("m²","").strip())
-                price = post.find("span",class_="advert-list-items__content-price-price").text.strip()
+                #price = post.find("span",class_="advert-list-items__content-price-price").text.strip()
+                price = post.find("div", class_="advert-list-items__content-price").span.text.strip()
                 price = price.replace("Kč","")
                 price = price.encode("ascii", errors="ignore").decode()
-                price = int(price.replace(" ","").strip())
-            
-                price_per_meter = price / meters
+                try:
+                    price = int(price.replace(" ","").strip())
+                except ValueError:
+                    price = 1000000000
+                try:
+                    price_per_meter = int(price) / int(meters)
+                except ValueError:
+                    price_per_meter = 100000
                 location = post.find("p",class_="advert-list-items__content-address").text.strip()
                 floor = "N/A"
                 penb = "N/A"
@@ -99,7 +104,10 @@ class Scraper:
                 try:
                     link = post.find("a",class_="form-price")["href"]
                 except:
-                    link = post.find("a",class_="advert-list-items__content")["href"]
+                    try:
+                        link = post.find("a",class_="advert-list-items__content")["href"]
+                    except:
+                        link = post.find("a", class_= "advert-list-items__images").get("href")
 
                 floor, penb, state = self.parse_post(link)
 
@@ -118,12 +126,13 @@ class Scraper:
             except AttributeError as ae:
                 pass # this is an advert
             except Exception as e:
-                print("Exception occurred in post:")
-                print(traceback.format_exc())
-                print(e.__class__.__name__, str(e))
+                # print("Exception occurred in post:")
+                # print(traceback.format_exc())
+                # print(e.__class__.__name__, str(e))
                 if "Cena" in str(e):
                     pass
                 elif "Rezerv" in str(e):
                     pass
                 else:
-                    print(post)
+                    # print(post)
+                    pass

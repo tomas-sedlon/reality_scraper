@@ -8,7 +8,10 @@ class Scraper:
     def __init__(self, cfg):
         self.flats = []
         baseUrl = cfg['bezrealitky_url']
-        self.urls = [baseUrl,baseUrl+"&page=2",baseUrl+"&page=3"]
+        self.urls = [baseUrl]
+        for i in range(1,10):
+            url = baseUrl + "&page=" + str(i)
+            self.urls.append(url)
 
     def start_workflow(self):
         self.parse_pages(self.urls)

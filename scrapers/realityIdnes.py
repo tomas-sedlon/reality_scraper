@@ -14,7 +14,7 @@ class Scraper:
         baseUrl = cfg['realityIdnes_url']
 
         self.urls = [baseUrl]
-        for i in range(1,6):
+        for i in range(1,39):
             additionalUrl = baseUrl+ "&page="+str(i)
             self.urls.append(additionalUrl)
 
@@ -36,12 +36,12 @@ class Scraper:
     def parse_posts(self,posts):
         for post in posts:
 
-            price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","")
+            price = post.find("p",class_="c-list-products__price").text.strip().replace("Kč","").replace(" ","").replace("Cenanavyžádání","999999999")
             price = int(price)
             location = post.find("p",class_="c-list-products__info").text.strip()
             title = post.find("h2", class_="c-list-products__title").text.strip().replace("\n","").replace("prodejbytu","")
             try:
-                size = int(title.split(',')[1].replace("m²","").strip().split(".")[0])
+                size = int(title.replace("m²","").strip().split(" ")[1])
             except Exception as e:
                 print(f"Cannot parse title {title}, error: {repr(e)}")
                 size = 1

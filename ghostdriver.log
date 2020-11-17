@@ -1,0 +1,594 @@
+[INFO  - 2020-09-30T20:44:55.475Z] GhostDriver - Main - running on port 55293
+[INFO  - 2020-09-30T20:44:55.746Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.settings - {"XSSAuditingEnabled":false,"javascriptCanCloseWindows":true,"javascriptCanOpenWindows":true,"javascriptEnabled":true,"loadImages":true,"localToRemoteUrlAccessEnabled":false,"userAgent":"Mozilla/5.0 (Unknown; Linux x86_64) AppleWebKit/538.1 (KHTML, like Gecko) PhantomJS/2.1.1 Safari/538.1","webSecurityEnabled":true}
+[INFO  - 2020-09-30T20:44:55.746Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.customHeaders:  - {}
+[INFO  - 2020-09-30T20:44:55.746Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - Session.negotiatedCapabilities - {"browserName":"phantomjs","version":"2.1.1","driverName":"ghostdriver","driverVersion":"1.2.0","platform":"linux-unknown-64bit","javascriptEnabled":true,"takesScreenshot":true,"handlesAlerts":false,"databaseEnabled":false,"locationContextEnabled":false,"applicationCacheEnabled":false,"browserConnectionEnabled":false,"cssSelectorsEnabled":true,"webStorageEnabled":false,"rotatable":false,"acceptSslCerts":false,"nativeEvents":true,"proxy":{"proxyType":"direct"}}
+[INFO  - 2020-09-30T20:44:55.747Z] SessionManagerReqHand - _postNewSessionCommand - New Session Created: cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff
+[ERROR - 2020-09-30T20:44:56.733Z] Session [cc2c0190-035d-11eb-91fd-4971346b5bf4] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:44:56.733Z] Session [cc2c0190-035d-11eb-91fd-4971346b5bf4] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:01.746Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:01.749Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:04.511Z] Session [cc2c0190-035d-11eb-91fd-4971346b5bf4] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:04.512Z] Session [cc2c0190-035d-11eb-91fd-4971346b5bf4] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:05.462Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:05.464Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:06.604Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:06.605Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:08.253Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:08.372Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:10.145Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:10.214Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:12.850Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:12.850Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:14.728Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:14.736Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:15.455Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:15.458Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:15.750Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:15.761Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:16.796Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:16.807Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:19.408Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:19.409Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:21.811Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:21.864Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:23.292Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:23.327Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:24.897Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:24.928Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:26.506Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:26.518Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:27.673Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:27.674Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:28.806Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:28.807Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:31.293Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:31.294Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:35.495Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:35.495Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:36.611Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:36.615Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:38.578Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:38.580Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:39.860Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:39.862Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:41.395Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:41.396Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:42.171Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:42.187Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:42.345Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:42.349Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:43.686Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:43.687Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:45.056Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:45.057Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:46.029Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:46.030Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:47.488Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:47.490Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:48.935Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:48.935Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:49.547Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /estates
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:49.552Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:49.724Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:49.725Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:50.913Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:50.914Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:52.665Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:52.665Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:53.761Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:53.767Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:55.220Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:55.221Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:57.004Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:57.018Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:58.719Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:58.719Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:59.734Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:45:59.741Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:00.057Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:00.059Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:03.073Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:03.078Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:05.471Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:05.474Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:05.961Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /estates
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:05.962Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:06.047Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:06.047Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:06.879Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:06.889Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:08.390Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:08.391Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.272Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.298Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:10.192Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:10.193Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:11.470Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:11.475Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:12.826Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:12.836Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:13.629Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:13.633Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:14.304Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:14.305Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:15.008Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:15.008Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:15.698Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:15.699Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.101Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /estates
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.102Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.193Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.193Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.680Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.694Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.787Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:16.788Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:17.460Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:17.460Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:17.959Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:17.960Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:18.044Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:18.044Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:21.156Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:21.157Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:23.171Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:23.172Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:23.928Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:23.929Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:24.622Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:24.623Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:26.699Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:26.701Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:27.249Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:27.252Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:27.381Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:27.401Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:28.084Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:28.085Z] Session [cc2a2cd0-035d-11eb-bdda-07f13740c922] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+:46:08.691Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - msg: [0] - /estates
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:08.693Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:08.784Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:08.786Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.482Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - msg: [0] - /userinfo
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.490Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - stack:
+  apply (:0)
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.610Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - msg: Error: Browser does not support navigator.geolocation!
+
+  phantomjs://platform/console++.js:263 in error
+[ERROR - 2020-09-30T20:46:09.611Z] Session [cc2f0ed0-035d-11eb-99a4-1b8a5dde44ff] - page.onError - stack:
+  i (https://geo.seznam.cz/static/js/geo.js:1)
+  (anonymous function) (https://geo.seznam.cz/static/js/geo.js:1)
+
+  phantomjs://platform/console++.js:263 in error

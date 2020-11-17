@@ -15,7 +15,7 @@ class ScrapingPipeline:
         self.cfg = client_config
         self.all_flats = []
         # TODO add bydlisnami(self.cfg)
-        self.scrapers = [centrumReality(self.cfg), sReality(self.cfg), realityIdnes(self.cfg), bezrealitky(self.cfg)]
+        self.scrapers = [bezrealitky(self.cfg), centrumReality(self.cfg), sReality(self.cfg), realityIdnes(self.cfg)]
         self.res_file = self.cfg['res_file']
         self.db_name = self.cfg['db_name']
         # Define the MySQL engine using MySQL Connector/Python
