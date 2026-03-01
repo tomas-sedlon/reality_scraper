@@ -22,17 +22,14 @@ class EmailSender:
         self.smtp_server = "smtp.gmail.com"
         self.context = ssl.create_default_context()
 
-    # send message to all recipients
     def send_message_to_all(self, message_content: Optional[str]):
         for recipient in self.receiver_emails:
             self.send_message(message_content, recipient)
 
-    # send the message with some predefined parts
     def send_message(self, message_content: Optional[str], receiver_email):
         if message_content is not None:
-
             message = MIMEMultipart("alternative")
-            message["Subject"] = "reality report"
+            message["Subject"] = self.subject
             message["From"] = self.sender_email
             message["To"] = receiver_email
 
@@ -41,25 +38,10 @@ class EmailSender:
 
             try:
                 with smtplib.SMTP_SSL(self.smtp_server, self.port, context=self.context, timeout=15) as server:
-
                     server.login(self.sender_email, self.sender_email_password)
-                    response = server.sendmail(
-                        self.sender_email,
-                        receiver_email,
-                        server.sendmail(self.sender_email, receiver_email, message.as_string())
-                    )
-                    print(response)
-                    server.close()
-                    server.quit()
-                    print(f"sent message to email {receiver_email}")
-
-            except TypeError:
-                print(f"sent message to email {receiver_email} and timed out afterwards")
-
+                    server.sendmail(self.sender_email, receiver_email, message.as_string())
+                    print(f"Sent message to email {receiver_email}")
+            except Exception as e:
+                print(f"Error sending email to {receiver_email}: {repr(e)}")
         else:
             print(f"Received an empty message, will not send anything")
-
-
-
-
-
