@@ -1,6 +1,7 @@
 import requests
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 from model.flat import Flat
 import urllib3
@@ -93,50 +94,57 @@ class Scraper:
         return listings
 
     def parse_posts(self, listings):
+        # Prepare valid listings and their links
+        prepared = []
         for listing in listings:
-            try:
-                price = listing.get('price', 0)
-                if not price or price <= 0:
-                    continue
+            price = listing.get('price', 0)
+            if not price or price <= 0:
+                continue
+            address = listing.get('address', '')
+            if not address:
+                for k, v in listing.items():
+                    if k.startswith('address') and isinstance(v, str):
+                        address = v
+                        break
+            if not address:
+                address = listing.get('locality', '')
+            uri = listing.get('uri', '')
+            listing_id = listing.get('id', '')
+            link = f"{self.BASE_URL}/nemovitosti-byty-domy/{uri}" if uri else f"{self.BASE_URL}/nemovitosti-byty-domy/{listing_id}"
+            prepared.append((listing, address, link))
 
-                # Address may be stored with locale param key like address({"locale":"CS"})
-                address = listing.get('address', '')
-                if not address:
-                    for k, v in listing.items():
-                        if k.startswith('address') and isinstance(v, str):
-                            address = v
-                            break
-                if not address:
-                    address = listing.get('locality', '')
-                surface = listing.get('surface', 0)
-                disposition = listing.get('disposition', '')
-                uri = listing.get('uri', '')
-                listing_id = listing.get('id', '')
+        # Fetch all details in parallel
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(self.parse_post, link): (listing, address, link) for listing, address, link in prepared}
+            for future in as_completed(futures):
+                listing, address, link = futures[future]
+                try:
+                    price = listing.get('price', 0)
+                    surface = listing.get('surface', 0)
+                    disposition = listing.get('disposition', '')
 
-                rooms = DISPOSITION_MAP.get(disposition, disposition)
-                room_coeff = self._calc_room_coeff(rooms)
-                meters = int(surface) if surface else 0
-                price_per_meter = price / meters if meters > 0 else 999999
+                    rooms = DISPOSITION_MAP.get(disposition, disposition)
+                    room_coeff = self._calc_room_coeff(rooms)
+                    meters = int(surface) if surface else 0
+                    price_per_meter = price / meters if meters > 0 else 999999
 
-                link = f"{self.BASE_URL}/nemovitosti-byty-domy/{uri}" if uri else f"{self.BASE_URL}/nemovitosti-byty-domy/{listing_id}"
+                    floor, penb, state = future.result()
 
-                floor, penb, state = self.parse_post(link)
-
-                flat = Flat(
-                    price=price,
-                    title=address,
-                    link=link,
-                    rooms=rooms,
-                    size=room_coeff,
-                    meters=meters,
-                    price_per_meter=price_per_meter,
-                    floor=floor,
-                    penb=penb,
-                    state=state
-                )
-                self.flats.append(flat.get_cmp_dict())
-            except Exception as e:
-                print(f"Error parsing bezrealitky listing: {repr(e)}")
+                    flat = Flat(
+                        price=price,
+                        title=address,
+                        link=link,
+                        rooms=rooms,
+                        size=room_coeff,
+                        meters=meters,
+                        price_per_meter=price_per_meter,
+                        floor=floor,
+                        penb=penb,
+                        state=state
+                    )
+                    self.flats.append(flat.get_cmp_dict())
+                except Exception as e:
+                    print(f"Error parsing bezrealitky listing: {repr(e)}")
 
     def parse_post(self, link):
         """Fetch detail page and extract floor, PENB, condition from __NEXT_DATA__."""
