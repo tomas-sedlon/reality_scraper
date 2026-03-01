@@ -1,5 +1,6 @@
 import requests
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from model.flat import Flat
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -75,43 +76,51 @@ class Scraper:
                 print(f"Error fetching sreality page {page}: {repr(e)}")
 
     def parse_posts(self, estates):
+        # Filter valid estates and prepare for parallel detail fetching
+        valid = []
         for estate in estates:
-            try:
-                name = estate.get('name', '')
-                list_price = estate.get('price', 0)
-                locality = estate.get('locality', '')
-                hash_id = estate.get('hash_id', '')
+            name = estate.get('name', '')
+            list_price = estate.get('price', 0)
+            if list_price <= 0 or list_price >= 999999999:
+                continue
+            valid.append(estate)
 
-                if list_price <= 0 or list_price >= 999999999:
-                    continue
+        # Fetch all details in parallel
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(self.parse_post, e.get('hash_id', '')): e for e in valid}
+            for future in as_completed(futures):
+                estate = futures[future]
+                try:
+                    name = estate.get('name', '')
+                    list_price = estate.get('price', 0)
+                    locality = estate.get('locality', '')
+                    hash_id = estate.get('hash_id', '')
+                    rooms = self._parse_rooms(name)
+                    room_coeff = self._calc_room_coeff(rooms)
 
-                rooms = self._parse_rooms(name)
-                room_coeff = self._calc_room_coeff(rooms)
+                    floor, penb, state, seo_locality, detail_price, detail_meters = future.result()
 
-                floor, penb, state, seo_locality, detail_price, detail_meters = self.parse_post(hash_id)
+                    price = detail_price if detail_price > 0 else list_price
+                    meters = detail_meters if detail_meters > 0 else self._parse_meters(name)
+                    price_per_meter = price / meters if meters > 0 else 999999
 
-                # Use detail values when available, fall back to list values
-                price = detail_price if detail_price > 0 else list_price
-                meters = detail_meters if detail_meters > 0 else self._parse_meters(name)
-                price_per_meter = price / meters if meters > 0 else 999999
+                    link = f"https://www.sreality.cz/detail/prodej/byt/{rooms.replace('+', '%2B')}/{seo_locality}/{hash_id}"
 
-                link = f"https://www.sreality.cz/detail/prodej/byt/{rooms.replace('+', '%2B')}/{seo_locality}/{hash_id}"
-
-                flat = Flat(
-                    price=price,
-                    title=locality,
-                    link=link,
-                    rooms=rooms,
-                    size=room_coeff,
-                    meters=meters,
-                    price_per_meter=price_per_meter,
-                    floor=floor,
-                    penb=penb,
-                    state=state
-                )
-                self.flats.append(flat.get_cmp_dict())
-            except Exception as e:
-                print(f"Error parsing sreality estate: {repr(e)}")
+                    flat = Flat(
+                        price=price,
+                        title=locality,
+                        link=link,
+                        rooms=rooms,
+                        size=room_coeff,
+                        meters=meters,
+                        price_per_meter=price_per_meter,
+                        floor=floor,
+                        penb=penb,
+                        state=state
+                    )
+                    self.flats.append(flat.get_cmp_dict())
+                except Exception as e:
+                    print(f"Error parsing sreality estate: {repr(e)}")
 
     def parse_post(self, hash_id):
         """Fetch detail for a single estate via API."""

@@ -1,6 +1,7 @@
 from scrapers.bezRealitky import Scraper as bezrealitky
 from scrapers.realityIdnes import Scraper as realityIdnes
 from scrapers.sreality import Scraper as sReality
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import pandas as pd
 import sqlalchemy as db
 from sqlalchemy.orm import sessionmaker
@@ -36,15 +37,18 @@ class ScrapingPipeline:
         return False
 
     def start_scraping_workflow(self):
-        for scraper in self.scrapers:
-            try:
-                flats = scraper.start_workflow()
-                for flat in flats:
-                    if not self.check_existing(flat):
-                        self.all_flats.append(flat)
-                print(f"  {scraper.__class__.__module__}: found {len(flats)} flats")
-            except Exception as e:
-                print(f"  Error in scraper {scraper.__class__.__module__}: {repr(e)}")
+        with ThreadPoolExecutor(max_workers=3) as pool:
+            futures = {pool.submit(scraper.start_workflow): scraper for scraper in self.scrapers}
+            for future in as_completed(futures):
+                scraper = futures[future]
+                try:
+                    flats = future.result()
+                    for flat in flats:
+                        if not self.check_existing(flat):
+                            self.all_flats.append(flat)
+                    print(f"  {scraper.__class__.__module__}: found {len(flats)} flats")
+                except Exception as e:
+                    print(f"  Error in scraper {scraper.__class__.__module__}: {repr(e)}")
 
     def get_current_results(self):
         if not self.all_flats:

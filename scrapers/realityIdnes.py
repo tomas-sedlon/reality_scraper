@@ -1,4 +1,5 @@
 import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 from model.flat import Flat
 import re
@@ -48,46 +49,33 @@ class Scraper:
                     break
 
     def parse_posts(self, posts):
+        # Extract listing data and links first
+        prepared = []
         for post in posts:
             try:
-                # Price
                 price_el = post.find("p", class_="c-products__price")
                 if not price_el:
                     continue
                 price_text = price_el.get_text(strip=True)
-                # Remove currency, spaces, non-breaking spaces, zero-width chars
                 price_clean = re.sub(r'[^\d]', '', price_text.replace("Cenanavyžádání", "999999999"))
                 if not price_clean:
                     continue
                 price = int(price_clean)
 
-                # Location
                 location_el = post.find("p", class_="c-products__info")
                 location = location_el.text.strip() if location_el else "N/A"
 
-                # Title: "prodej bytu 1+kk 42 m²"
                 title_el = post.find("h2", class_="c-products__title")
                 if not title_el:
                     continue
                 title = title_el.get_text(strip=True)
 
-                # Parse meters from title
                 m_match = re.search(r'(\d+)\s*m[²2]', title)
                 size = int(m_match.group(1)) if m_match else 1
 
-                # Parse rooms from title
                 r_match = re.search(r'(\d\+(?:kk|\d))', title, re.IGNORECASE)
                 rooms = r_match.group(1) if r_match else "0+0"
 
-                try:
-                    room_base_coeff = int(rooms.split('+')[0])
-                except (ValueError, IndexError):
-                    room_base_coeff = 0
-                room_addons_coeff = 0.0 if "kk" in rooms else 0.5
-                room_coeff = room_base_coeff + room_addons_coeff
-                price_per_meter = price / size if size > 0 else 999999
-
-                # Link - may be full URL or relative
                 link_el = post.find("a", class_="c-products__link")
                 if not link_el:
                     continue
@@ -96,23 +84,41 @@ class Scraper:
                     link = "https://reality.idnes.cz" + link
                 link = link.split('?')[0]
 
-                floor, penb, state = self.parse_post(link)
-
-                flat = Flat(
-                    title=location,
-                    rooms=rooms,
-                    size=room_coeff,
-                    price=price,
-                    price_per_meter=price_per_meter,
-                    meters=size,
-                    link=link,
-                    floor=floor,
-                    penb=penb,
-                    state=state
-                )
-                self.flats.append(flat.get_cmp_dict())
+                prepared.append((price, location, rooms, size, link))
             except Exception as e:
                 print(f"Error parsing realityIdnes post: {repr(e)}")
+
+        # Fetch all details in parallel
+        with ThreadPoolExecutor(max_workers=10) as pool:
+            futures = {pool.submit(self.parse_post, link): (price, location, rooms, size, link)
+                       for price, location, rooms, size, link in prepared}
+            for future in as_completed(futures):
+                price, location, rooms, size, link = futures[future]
+                try:
+                    room_base_coeff = int(rooms.split('+')[0])
+                except (ValueError, IndexError):
+                    room_base_coeff = 0
+                room_addons_coeff = 0.0 if "kk" in rooms else 0.5
+                room_coeff = room_base_coeff + room_addons_coeff
+                price_per_meter = price / size if size > 0 else 999999
+
+                try:
+                    floor, penb, state = future.result()
+                    flat = Flat(
+                        title=location,
+                        rooms=rooms,
+                        size=room_coeff,
+                        price=price,
+                        price_per_meter=price_per_meter,
+                        meters=size,
+                        link=link,
+                        floor=floor,
+                        penb=penb,
+                        state=state
+                    )
+                    self.flats.append(flat.get_cmp_dict())
+                except Exception as e:
+                    print(f"Error parsing realityIdnes post: {repr(e)}")
 
     def parse_post(self, link):
         floor = 1000
