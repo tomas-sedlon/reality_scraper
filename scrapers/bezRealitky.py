@@ -4,6 +4,8 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 from model.flat import Flat
+from model.property import HouseProperty, LotProperty
+from scrapers.geo import haversine_km
 import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -34,27 +36,43 @@ CONDITION_MAP = {
     'DEMOLITION': 'K demolici',
 }
 
+# Map building type codes to Czech strings
+BUILDING_TYPE_MAP = {
+    'DETACHED': 'Samostatný',
+    'SEMI_DETACHED': 'Řadový',
+    'TERRACED': 'Řadový',
+    'FARM': 'Usedlost',
+    'VILLA': 'Vila',
+    'OTHER': 'Ostatní',
+}
+
 
 class Scraper:
     BASE_URL = "https://www.bezrealitky.cz"
 
-    def __init__(self, cfg):
+    def __init__(self, cfg, property_type='flat'):
         self.flats = []
-        self.base_listing_url = cfg['bezrealitky_url']
+        self.property_type = property_type
+        self.base_listing_url = cfg.get('bezrealitky_url', '')
         self.pages = cfg.get('bezrealitky_pages', 5)
+        self.location = cfg.get('location', {})
 
     def start_workflow(self):
+        if not self.base_listing_url:
+            print(f"INFO -- bezrealitky ({self.property_type}): no URL configured, skipping")
+            return self.flats
         self.parse_pages()
         return self.flats
 
     def parse_pages(self):
+        type_label = self.property_type
         for page in range(0, self.pages):
             url = self.base_listing_url
             if page > 0:
                 sep = '&' if '?' in url else '?'
                 url = f"{url}{sep}page={page}"
             try:
-                print(f"INFO -- bezrealitky: parsing page {page + 1}")
+                print(f"INFO -- bezrealitky ({type_label}): parsing page {page + 1}")
                 response = requests.get(url, headers=HEADERS, verify=False, timeout=30)
                 response.raise_for_status()
                 listings = self._extract_listings(response.text)
@@ -94,12 +112,22 @@ class Scraper:
         return listings
 
     def parse_posts(self, listings):
-        # Prepare valid listings and their links
+        center_lat = self.location.get('lat') if self.location else None
+        center_lng = self.location.get('lng') if self.location else None
+        max_km = self.location.get('distance_km') if self.location else None
+
         prepared = []
         for listing in listings:
             price = listing.get('price', 0)
             if not price or price <= 0:
                 continue
+            # GPS radius filter
+            if center_lat and center_lng and max_km:
+                gps = listing.get('gps', {})
+                if isinstance(gps, dict) and gps.get('lat') and gps.get('lng'):
+                    dist = haversine_km(center_lat, center_lng, gps['lat'], gps['lng'])
+                    if dist > max_km:
+                        continue
             address = listing.get('address', '')
             if not address:
                 for k, v in listing.items():
@@ -113,41 +141,70 @@ class Scraper:
             link = f"{self.BASE_URL}/nemovitosti-byty-domy/{uri}" if uri else f"{self.BASE_URL}/nemovitosti-byty-domy/{listing_id}"
             prepared.append((listing, address, link))
 
-        # Fetch all details in parallel
         with ThreadPoolExecutor(max_workers=10) as pool:
             futures = {pool.submit(self.parse_post, link): (listing, address, link) for listing, address, link in prepared}
             for future in as_completed(futures):
                 listing, address, link = futures[future]
                 try:
-                    price = listing.get('price', 0)
-                    surface = listing.get('surface', 0)
-                    disposition = listing.get('disposition', '')
-
-                    rooms = DISPOSITION_MAP.get(disposition, disposition)
-                    room_coeff = self._calc_room_coeff(rooms)
-                    meters = int(surface) if surface else 0
-                    price_per_meter = price / meters if meters > 0 else 999999
-
-                    floor, penb, state = future.result()
-
-                    flat = Flat(
-                        price=price,
-                        title=address,
-                        link=link,
-                        rooms=rooms,
-                        size=room_coeff,
-                        meters=meters,
-                        price_per_meter=price_per_meter,
-                        floor=floor,
-                        penb=penb,
-                        state=state
-                    )
-                    self.flats.append(flat.get_cmp_dict())
+                    self._build_property(listing, address, link, future.result())
                 except Exception as e:
                     print(f"Error parsing bezrealitky listing: {repr(e)}")
 
+    def _build_property(self, listing, address, link, detail_result):
+        price = listing.get('price', 0)
+
+        if self.property_type == 'flat':
+            surface = listing.get('surface', 0)
+            disposition = listing.get('disposition', '')
+            rooms = DISPOSITION_MAP.get(disposition, disposition)
+            room_coeff = self._calc_room_coeff(rooms)
+            meters = int(surface) if surface else 0
+            price_per_meter = price / meters if meters > 0 else 999999
+            floor, penb, state = detail_result
+            prop = Flat(
+                price=price, title=address, link=link, rooms=rooms,
+                size=room_coeff, meters=meters, price_per_meter=price_per_meter,
+                floor=floor, penb=penb, state=state
+            )
+
+        elif self.property_type == 'house':
+            surface = listing.get('surface', 0)
+            living_area = int(surface) if surface else 0
+            surface_land = listing.get('surfaceLand', 0)
+            lot_size = int(surface_land) if surface_land else 0
+            price_per_meter = price / living_area if living_area > 0 else 999999
+            building_type_raw, penb, state = detail_result
+            building_type = listing.get('buildingType', building_type_raw)
+            house_type = BUILDING_TYPE_MAP.get(building_type, str(building_type))
+            prop = HouseProperty(
+                price=price, title=address, link=link,
+                living_area=living_area, lot_size=lot_size, house_type=house_type,
+                price_per_meter=price_per_meter, penb=penb, state=state
+            )
+
+        elif self.property_type == 'lot':
+            surface_land = listing.get('surfaceLand', 0) or listing.get('surface', 0)
+            lot_size = int(surface_land) if surface_land else 0
+            price_per_meter = price / lot_size if lot_size > 0 else 999999
+            water, gas, electricity, sewer = detail_result
+            prop = LotProperty(
+                price=price, title=address, link=link,
+                lot_size=lot_size, price_per_meter=price_per_meter,
+                water=water, gas=gas, electricity=electricity, sewer=sewer
+            )
+
+        self.flats.append(prop.get_cmp_dict())
+
     def parse_post(self, link):
-        """Fetch detail page and extract floor, PENB, condition from __NEXT_DATA__."""
+        """Fetch detail page and extract fields based on property_type."""
+        if self.property_type == 'house':
+            return self._parse_post_house(link)
+        elif self.property_type == 'lot':
+            return self._parse_post_lot(link)
+        else:
+            return self._parse_post_flat(link)
+
+    def _parse_post_flat(self, link):
         floor = 1000
         penb = "N/A"
         state = "neutral"
@@ -163,25 +220,18 @@ class Scraper:
 
             data = json.loads(script.string)
             page_props = data.get('props', {}).get('pageProps', {})
-
-            # origAdvert has full detail data
             advert = page_props.get('origAdvert', {})
 
             if advert:
-                # Floor — etage is the floor number
                 etage = advert.get('etage') or advert.get('floor')
                 if etage is not None:
                     try:
                         floor = int(etage)
                     except (ValueError, TypeError):
                         floor = 1000
-
-                # PENB
                 penb_val = advert.get('penb', '')
                 if penb_val:
                     penb = str(penb_val).split('-')[0].strip()
-
-                # Condition
                 condition = advert.get('condition', '')
                 if condition:
                     state = CONDITION_MAP.get(condition, condition)
@@ -190,6 +240,74 @@ class Scraper:
             print(f"Error fetching bezrealitky detail {link}: {repr(e)}")
 
         return floor, penb, state
+
+    def _parse_post_house(self, link):
+        building_type = "N/A"
+        penb = "N/A"
+        state = "N/A"
+
+        try:
+            response = requests.get(link, headers=HEADERS, verify=False, timeout=30)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            script = soup.find('script', id='__NEXT_DATA__')
+            if not script:
+                return building_type, penb, state
+
+            data = json.loads(script.string)
+            page_props = data.get('props', {}).get('pageProps', {})
+            advert = page_props.get('origAdvert', {})
+
+            if advert:
+                bt = advert.get('buildingType', '')
+                if bt:
+                    building_type = bt
+                penb_val = advert.get('penb', '')
+                if penb_val:
+                    penb = str(penb_val).split('-')[0].strip()
+                condition = advert.get('condition', '')
+                if condition:
+                    state = CONDITION_MAP.get(condition, condition)
+
+        except Exception as e:
+            print(f"Error fetching bezrealitky detail {link}: {repr(e)}")
+
+        return building_type, penb, state
+
+    def _parse_post_lot(self, link):
+        water = "N/A"
+        gas = "N/A"
+        electricity = "N/A"
+        sewer = "N/A"
+
+        try:
+            response = requests.get(link, headers=HEADERS, verify=False, timeout=30)
+            response.raise_for_status()
+
+            soup = BeautifulSoup(response.text, 'html.parser')
+            script = soup.find('script', id='__NEXT_DATA__')
+            if not script:
+                return water, gas, electricity, sewer
+
+            data = json.loads(script.string)
+            page_props = data.get('props', {}).get('pageProps', {})
+            advert = page_props.get('origAdvert', {})
+
+            if advert:
+                if advert.get('water'):
+                    water = 'Ano'
+                if advert.get('gas'):
+                    gas = 'Ano'
+                if advert.get('electricity'):
+                    electricity = 'Ano'
+                if advert.get('sewage') or advert.get('sewer'):
+                    sewer = 'Ano'
+
+        except Exception as e:
+            print(f"Error fetching bezrealitky detail {link}: {repr(e)}")
+
+        return water, gas, electricity, sewer
 
     @staticmethod
     def _calc_room_coeff(rooms):
