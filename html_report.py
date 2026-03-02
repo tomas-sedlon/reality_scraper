@@ -3,15 +3,60 @@ import webbrowser
 import datetime
 import pandas as pd
 
+# Column definitions per property type: (key, header, css_class, format_func)
+COLUMN_CONFIGS = {
+    'flat': [
+        ('title', 'Location', '', None),
+        ('price', 'Price', 'price', lambda v: f"{int(v):,} Kč"),
+        ('rooms', 'Rooms', 'num', None),
+        ('meters', 'm²', 'num', lambda v: str(int(v))),
+        ('price_per_meter', 'Price/m²', 'num', lambda v: f"{float(v):,.0f}"),
+        ('floor', 'Floor', 'num', None),
+        ('penb', 'PENB', '', None),
+        ('state', 'State', '', None),
+    ],
+    'house': [
+        ('title', 'Location', '', None),
+        ('price', 'Price', 'price', lambda v: f"{int(v):,} Kč"),
+        ('living_area', 'Living m²', 'num', lambda v: str(int(v))),
+        ('lot_size', 'Lot m²', 'num', lambda v: str(int(v))),
+        ('house_type', 'Type', '', None),
+        ('price_per_meter', 'Price/m²', 'num', lambda v: f"{float(v):,.0f}"),
+        ('penb', 'PENB', '', None),
+        ('state', 'State', '', None),
+    ],
+    'lot': [
+        ('title', 'Location', '', None),
+        ('price', 'Price', 'price', lambda v: f"{int(v):,} Kč"),
+        ('lot_size', 'Lot m²', 'num', lambda v: str(int(v))),
+        ('price_per_meter', 'Price/m²', 'num', lambda v: f"{float(v):,.0f}"),
+        ('water', 'Water', '', None),
+        ('gas', 'Gas', '', None),
+        ('electricity', 'Electricity', '', None),
+        ('sewer', 'Sewer', '', None),
+    ],
+}
 
-def generate_html_report(new_flats: pd.DataFrame, all_flats: pd.DataFrame, output_dir: str = './output'):
-    """Generate an HTML report of scraped flats and open it in the browser."""
+TYPE_LABELS = {
+    'flat': 'Flats',
+    'house': 'Houses',
+    'lot': 'Lots',
+}
+
+
+def generate_html_report(new_data, all_data, output_dir: str = './output'):
+    """Generate an HTML report. Accepts either DataFrames (legacy) or dicts keyed by property type."""
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, 'report.html')
     now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
 
-    new_rows = _build_rows(new_flats) if not new_flats.empty else '<tr><td colspan="9" class="empty">No new flats found</td></tr>'
-    all_rows = _build_rows(all_flats) if not all_flats.empty else '<tr><td colspan="9" class="empty">No flats found</td></tr>'
+    # Normalize input: if plain DataFrames, wrap in dict
+    if isinstance(new_data, pd.DataFrame):
+        new_data = {'flat': new_data}
+    if isinstance(all_data, pd.DataFrame):
+        all_data = {'flat': all_data}
+
+    sections_html = _build_all_sections(new_data, all_data)
 
     html = f"""<!DOCTYPE html>
 <html lang="cs">
@@ -50,51 +95,7 @@ def generate_html_report(new_flats: pd.DataFrame, all_flats: pd.DataFrame, outpu
 <h1>Reality Scraper Report</h1>
 <p class="meta">Generated: {now}</p>
 
-<div class="section">
-  <h2>New Flats <span class="count">({len(new_flats)})</span></h2>
-  <div class="filters">
-    <input type="text" id="filter-new" placeholder="Filter new flats..." oninput="filterTable('new-table', this.value)">
-  </div>
-  <div style="overflow-x:auto;">
-  <table id="new-table">
-    <thead><tr>
-      <th onclick="sortTable('new-table',0)">Location <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',1)">Price <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',2)">Rooms <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',3)">m&#178; <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',4)">Price/m&#178; <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',5)">Floor <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',6)">PENB <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('new-table',7)">State <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th>Link</th>
-    </tr></thead>
-    <tbody>{new_rows}</tbody>
-  </table>
-  </div>
-</div>
-
-<div class="section">
-  <h2>All Scraped Flats <span class="count">({len(all_flats)})</span></h2>
-  <div class="filters">
-    <input type="text" id="filter-all" placeholder="Filter all flats..." oninput="filterTable('all-table', this.value)">
-  </div>
-  <div style="overflow-x:auto;">
-  <table id="all-table">
-    <thead><tr>
-      <th onclick="sortTable('all-table',0)">Location <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',1)">Price <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',2)">Rooms <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',3)">m&#178; <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',4)">Price/m&#178; <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',5)">Floor <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',6)">PENB <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th onclick="sortTable('all-table',7)">State <span class="arrow">&#x25B4;&#x25BE;</span></th>
-      <th>Link</th>
-    </tr></thead>
-    <tbody>{all_rows}</tbody>
-  </table>
-  </div>
-</div>
+{sections_html}
 
 <script>
 function sortTable(tableId, colIdx) {{
@@ -129,27 +130,93 @@ function filterTable(tableId, query) {{
     return path
 
 
-def _build_rows(df: pd.DataFrame) -> str:
+def _build_all_sections(new_data: dict, all_data: dict) -> str:
+    """Build HTML sections for all property types."""
+    sections = []
+    all_types = list(dict.fromkeys(list(new_data.keys()) + list(all_data.keys())))
+
+    for pt in all_types:
+        label = TYPE_LABELS.get(pt, pt.capitalize())
+        cols = COLUMN_CONFIGS.get(pt, COLUMN_CONFIGS['flat'])
+        new_df = new_data.get(pt, pd.DataFrame())
+        all_df = all_data.get(pt, pd.DataFrame())
+        col_count = len(cols) + 1  # +1 for link column
+
+        new_table_id = f"new-{pt}-table"
+        all_table_id = f"all-{pt}-table"
+
+        new_rows = _build_rows(new_df, cols) if not new_df.empty else f'<tr><td colspan="{col_count}" class="empty">No new {label.lower()} found</td></tr>'
+        all_rows = _build_rows(all_df, cols) if not all_df.empty else f'<tr><td colspan="{col_count}" class="empty">No {label.lower()} found</td></tr>'
+
+        header_ths = ''.join(
+            f'<th onclick="sortTable(\'{{}}\',{i})">{col[1]} <span class="arrow">&#x25B4;&#x25BE;</span></th>'
+            for i, col in enumerate(cols)
+        )
+        header_ths += '<th>Link</th>'
+
+        new_headers = header_ths.format(*([new_table_id] * len(cols)))
+        all_headers = header_ths.format(*([all_table_id] * len(cols)))
+
+        # Rebuild headers properly
+        new_headers = ''
+        all_headers = ''
+        for i, col in enumerate(cols):
+            new_headers += f'<th onclick="sortTable(\'{new_table_id}\',{i})">{col[1]} <span class="arrow">&#x25B4;&#x25BE;</span></th>'
+            all_headers += f'<th onclick="sortTable(\'{all_table_id}\',{i})">{col[1]} <span class="arrow">&#x25B4;&#x25BE;</span></th>'
+        new_headers += '<th>Link</th>'
+        all_headers += '<th>Link</th>'
+
+        sections.append(f"""
+<div class="section">
+  <h2>New {label} <span class="count">({len(new_df)})</span></h2>
+  <div class="filters">
+    <input type="text" placeholder="Filter new {label.lower()}..." oninput="filterTable('{new_table_id}', this.value)">
+  </div>
+  <div style="overflow-x:auto;">
+  <table id="{new_table_id}">
+    <thead><tr>{new_headers}</tr></thead>
+    <tbody>{new_rows}</tbody>
+  </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>All Scraped {label} <span class="count">({len(all_df)})</span></h2>
+  <div class="filters">
+    <input type="text" placeholder="Filter all {label.lower()}..." oninput="filterTable('{all_table_id}', this.value)">
+  </div>
+  <div style="overflow-x:auto;">
+  <table id="{all_table_id}">
+    <thead><tr>{all_headers}</tr></thead>
+    <tbody>{all_rows}</tbody>
+  </table>
+  </div>
+</div>""")
+
+    return '\n'.join(sections)
+
+
+def _build_rows(df: pd.DataFrame, cols) -> str:
     rows = []
     for _, r in df.iterrows():
-        price = int(r.get('price', 0))
-        ppm = float(r.get('price_per_meter', 0))
-        meters = int(r.get('meters', 0))
-        floor = r.get('floor', 'N/A')
-        rooms = r.get('rooms', '')
+        cells = []
+        for key, header, css_class, fmt in cols:
+            val = r.get(key, 'N/A')
+            display = fmt(val) if fmt and val not in (None, 'N/A', '') else str(val)
+            data_attr = ''
+            if css_class in ('price', 'num'):
+                try:
+                    data_attr = f' data-val="{float(val)}"'
+                except (ValueError, TypeError):
+                    data_attr = f' data-val="{val}"'
+            cls = f' class="{css_class}"' if css_class else ''
+            cells.append(f'<td{cls}{data_attr}>{display}</td>')
+
         link = r.get('link', '')
         source = _detect_source(link)
-        rows.append(f"""<tr>
-  <td>{r.get('title', '')}</td>
-  <td class="price" data-val="{price}">{price:,} Kč</td>
-  <td class="num">{rooms}</td>
-  <td class="num" data-val="{meters}">{meters}</td>
-  <td class="num" data-val="{ppm:.0f}">{ppm:,.0f}</td>
-  <td class="num" data-val="{floor}">{floor}</td>
-  <td>{r.get('penb', 'N/A')}</td>
-  <td>{r.get('state', 'N/A')}</td>
-  <td><a href="{link}" target="_blank">{source}</a></td>
-</tr>""")
+        cells.append(f'<td><a href="{link}" target="_blank">{source}</a></td>')
+
+        rows.append(f"<tr>{''.join(cells)}</tr>")
     return '\n'.join(rows)
 
 
