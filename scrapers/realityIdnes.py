@@ -128,7 +128,7 @@ class Scraper:
 
     def _build_property(self, price, location, title, link, detail_result):
         if self.property_type == 'flat':
-            m_match = re.search(r'(\d[\d\s\xa0]*)\s*m[²2]', title)
+            m_match = re.search(r'(\d+)\s*m[²2]', title)
             size = int(m_match.group(1).replace('\xa0', '').replace(' ', '')) if m_match else 1
             r_match = re.search(r'(\d\+(?:kk|\d))', title, re.IGNORECASE)
             rooms = r_match.group(1) if r_match else "0+0"
@@ -151,7 +151,7 @@ class Scraper:
             living_area, lot_size, house_type, penb, state = detail_result
             # Fallback: parse living area from title ("domu 102 m²")
             if living_area == 0:
-                m = re.search(r'(\d[\d\s\xa0]*)\s*m[²2]', title)
+                m = re.search(r'(\d+)\s*m[²2]', title)
                 if m:
                     living_area = int(m.group(1).replace('\xa0', '').replace(' ', ''))
             # Fallback: parse lot size from title ("pozemkem 904 m²")

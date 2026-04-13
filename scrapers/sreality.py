@@ -163,6 +163,11 @@ class Scraper:
 
         url_type = URL_TYPE_MAP.get(self.property_type, 'byt')
 
+        # seo_locality is needed for a valid link; skip if detail fetch failed
+        seo_idx = {'flat': 3, 'house': 5, 'lot': 5}.get(self.property_type, 3)
+        if not detail_result[seo_idx]:
+            return
+
         if self.property_type == 'flat':
             floor, penb, state, seo_locality, detail_price, detail_meters = detail_result
             rooms = self._parse_rooms(name)
